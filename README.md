@@ -12,36 +12,36 @@ Studentnummer: 524292
 
 ###Codevoorbeeldvanjeeigencode
 
-###Alternatieven&adviezen
+###Alternatieven & adviezen
 
 ###Authentiekeengezaghebbendebronnen
 
-##Boxing&Unboxing
+##Boxing & Unboxing
 
 ###Beschrijvingvanconceptineigenwoorden
 
 ###Codevoorbeeldvanjeeigencode
 
-###Alternatieven&adviezen
+###Alternatieven & adviezen
 
 ###Authentiekeengezaghebbendebronnen
 
-##Delegates&Invoke
+##Delegates & Invoke
 
 ###Beschrijvingvanconceptineigenwoorden
 
 ###Codevoorbeeldvanjeeigencode
 
-###Alternatieven&adviezen
+###Alternatieven & adviezen
 
 ###Authentiekeengezaghebbendebronnen
 
-##Threading&Async
+##Threading & Async
 
 ###Beschrijvingvanconceptineigenwoorden
 
 ###Codevoorbeeldvanjeeigencode
 
-###Alternatieven&adviezen
+###Alternatieven & adviezen
 
 ###Authentiekeengezaghebbendebronnen
