@@ -4,44 +4,44 @@ Studentnummer: 524292
 
 ‐‐‐
 
-#Algemenebeschrijvingapplicatie
+#Algemene beschrijving applicatie
 
 ##Generics
 
-###Beschrijvingvanconceptineigenwoorden
+###Beschrijving van concept in eigen woorden
 
-###Codevoorbeeldvanjeeigencode
+###Code voorbeeld van je eigen code
 
 ###Alternatieven & adviezen
 
-###Authentiekeengezaghebbendebronnen
+###Authentieke en gezaghebbende bronnen
 
 ##Boxing & Unboxing
 
-###Beschrijvingvanconceptineigenwoorden
+###Beschrijving van concept in eigen woorden
 
-###Codevoorbeeldvanjeeigencode
+###Code voorbeeld van je eigen code
 
 ###Alternatieven & adviezen
 
-###Authentiekeengezaghebbendebronnen
+###Authentieke en gezaghebbende bronnen
 
 ##Delegates & Invoke
 
-###Beschrijvingvanconceptineigenwoorden
+###Beschrijving van concept in eigen woorden
 
-###Codevoorbeeldvanjeeigencode
+###Code voorbeeld van je eigen code
 
 ###Alternatieven & adviezen
 
-###Authentiekeengezaghebbendebronnen
+###Authentieke en gezaghebbende bronnen
 
 ##Threading & Async
 
-###Beschrijvingvanconceptineigenwoorden
+###Beschrijving van concept in eigen woorden
 
-###Codevoorbeeldvanjeeigencode
+###Code voorbeeld van je eigen code
 
 ###Alternatieven & adviezen
 
-###Authentiekeengezaghebbendebronnen
+###Authentieke en gezaghebbende bronnen
