@@ -34,7 +34,7 @@ namespace ChatApplication
         /// </summary>
         public void ReceiveData()
         {
-            var byteArray = new byte[1024];
+            var byteArray = new byte[256];
             string data;
             var t = new Thread(delegate ()
             {

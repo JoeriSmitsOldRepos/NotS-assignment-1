@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace ChatApplication
 {
@@ -55,7 +56,7 @@ namespace ChatApplication
             this.btnSend.TabIndex = 0;
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new EventHandler(this._BtnSend_Click);
+            this.btnSend.Click += new EventHandler(this.BtnSend_Click);
             // 
             // txtMessage
             // 
@@ -63,6 +64,7 @@ namespace ChatApplication
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(655, 20);
             this.txtMessage.TabIndex = 1;
+            this.txtMessage.KeyDown += new KeyEventHandler(this.TxtMessage_OnEnter);
             // 
             // lstChat
             // 

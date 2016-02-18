@@ -48,7 +48,7 @@ namespace ChatApplication
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _BtnSend_Click(object sender, EventArgs e)
+        private void BtnSend_Click(object sender, EventArgs e)
         {
             // If the server has hosted a server then we will send the message through the server's class
             // Otherwise we will send the message through the client class
@@ -84,6 +84,20 @@ namespace ChatApplication
             catch (NullReferenceException e)
             {
                 Console.Write(e);
+            }
+        }
+
+        /// <summary>
+        /// If the user is focused on the TxtMessage box and hit enter this method is fired
+        /// It will send the current message that is in txtMessage
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TxtMessage_OnEnter(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.BtnSend_Click(sender, e);
             }
         }
 
