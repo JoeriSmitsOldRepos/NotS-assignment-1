@@ -51,7 +51,8 @@ namespace ChatApplication
             // Catching any SocketExceptions if there is already a server running on the port
             catch(SocketException e)
             {
-                _printTextDelegate("Cannot create a server, because there is already a server running." + "Error: " + e);
+                _printTextDelegate("Cannot create a server, because there is already a server running.");
+                Console.Write(e);
                 _server.Stop();
             }
         }
@@ -70,16 +71,23 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            var byteArray = new byte[1024];
+            try
+            {
+                var byteArray = new byte[message.Length];
 
-            var stream = _client.GetStream();
+                var stream = _client.GetStream();
 
-            // Encoding the message to bytes for transportation
-            byteArray = Encoding.ASCII.GetBytes(message);
-            // Writing the bytes to the stream
-            stream.Write(byteArray, 0, byteArray.Length);
-            // Printing out the message to the current user
-            _printTextDelegate(message);
+                // Encoding the message to bytes for transportation
+                byteArray = Encoding.ASCII.GetBytes(message);
+                // Writing the bytes to the stream
+                stream.Write(byteArray, 0, byteArray.Length);
+                // Printing out the message to the current user
+                _printTextDelegate("<< " + message);
+            }
+            catch (NullReferenceException)
+            {
+                _printTextDelegate("Cannot connect to the server");
+            }
         }
     }
 }

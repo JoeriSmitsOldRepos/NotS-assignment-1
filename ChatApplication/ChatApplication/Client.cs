@@ -30,15 +30,25 @@ namespace ChatApplication
             // Start a new Thread to make a connection with the server
             var t = new Thread(delegate ()
             {
-                var client = new TcpClient();
-                client.Connect(endpoint);
-                _stream = client.GetStream();
-
-                // Create a dataStream when a connection have been made
-                var dataStream = new DataStream(client, delegate(string input)
+                // Try to connect to the server.
+                try
                 {
-                    printTextDelegate(input);
-                });
+                    var client = new TcpClient();
+                    client.Connect(endpoint);
+                    _stream = client.GetStream();
+
+                    // Create a dataStream when a connection have been made
+                    var dataStream = new DataStream(client, delegate(string input)
+                    {
+                        printTextDelegate(input);
+                    });
+                }
+                // Cannot connect to the server we will throw a message to the user and log the error.
+                catch (SocketException e)
+                {
+                    _printTextDelegate("We cannot connect to that server, make sure there is a server running on that IP.");
+                    Console.Write(e);
+                }
             });
             t.Start();
         }
@@ -49,14 +59,14 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            var byteArray = new byte[1024];
+            var byteArray = new byte[message.Length];
 
             // Encoding the message to bytes for transportation
             byteArray = Encoding.ASCII.GetBytes(message);
             // Writing the bytes to the stream
             _stream.Write(byteArray, 0, byteArray.Length);
             // Printing out the message to the current user
-            _printTextDelegate(message);
+            _printTextDelegate("<< " + message);
         }
     }
 }

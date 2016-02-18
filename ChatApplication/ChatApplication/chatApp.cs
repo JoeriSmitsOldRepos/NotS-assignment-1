@@ -20,6 +20,21 @@ namespace ChatApplication
         }
 
         /// <summary>
+        /// When the app is loaded we will disable the lstChat to prevent users for typing in the chat window
+        /// We will also preset the txtServerIP field to make it easier for testing purposes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ChatApp_Load(object sender, EventArgs e)
+        {
+            // Preset the IP textfield
+            txtServerIP.Text = @"127.0.0.1";
+
+            // Disable the lstChat to prevent the user from typing in it
+            lstChat.Enabled = false;
+        }
+
+        /// <summary>
         /// Listener for when the button is clicked to start a new server
         /// </summary>
         /// <param name="sender"></param>
@@ -58,7 +73,17 @@ namespace ChatApplication
             }
             else
             {
-                _client.SendMessage(txtMessage.Text);
+                // We will try to send the message to the server
+                try
+                {
+                    _client.SendMessage(txtMessage.Text);
+                }
+                // There was no connection made to a server, because the client is null 
+                catch (NullReferenceException err)
+                {
+                    _addTextToLstChat("Cannot send the message. Not connected to any server");
+                    Console.Write(err);
+                }
             }
             // Empty the textbox where the user can type the message after send
             txtMessage.Text = "";
@@ -95,9 +120,10 @@ namespace ChatApplication
         /// <param name="e"></param>
         private void TxtMessage_OnEnter(object sender, KeyEventArgs e)
         {
+            // When the key is Enter we will act as we clicked the BtnSend btn.
             if (e.KeyCode == Keys.Enter)
             {
-                this.BtnSend_Click(sender, e);
+                BtnSend_Click(sender, e);
             }
         }
 
@@ -113,5 +139,6 @@ namespace ChatApplication
                 lstChat.AppendText(Environment.NewLine);
             }));
         }
+
     }
 }

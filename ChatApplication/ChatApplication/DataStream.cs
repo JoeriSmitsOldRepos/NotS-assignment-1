@@ -56,7 +56,8 @@ namespace ChatApplication
                         listen = false;
                     }
 
-                    _printTextDelegate(data);
+                    // Printing the message to the user that has been received
+                    _printTextDelegate(">> " + data);
 
                     // Clearing the variables for the next data
                     data = null;
