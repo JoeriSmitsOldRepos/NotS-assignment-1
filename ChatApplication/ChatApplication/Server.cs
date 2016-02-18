@@ -6,64 +6,80 @@ using System.Threading;
 
 namespace ChatApplication
 {
-    class Server
+    internal class Server
     {
-        private int port;
-        private IPAddress ipAddress = IPAddress.Any;
-        private TcpListener server;
-        public delegate void PrintTextDelegate(String input);
+        private readonly IPAddress _ipAddress = IPAddress.Any;
+        private readonly TcpListener _server;
+        private TcpClient _client;
+        public delegate void PrintTextDelegate(string input);
+        private readonly PrintTextDelegate _printTextDelegate;
 
-        public Server(int port)
+        /// <summary>
+        /// Constructor Server
+        /// Greating a new IPEndpoint based on the ipAddress and port.
+        /// It will also create a new TcpListener to listen for any TCP clients
+        /// </summary>
+        /// <param name="port">Port number the server will be running on</param>
+        /// <param name="printTextDelegate">The print delegate to print out any messages to the user</param>
+        public Server(int port, PrintTextDelegate printTextDelegate)
         {
-            this.port = port;
-            IPEndPoint _endpoint = new IPEndPoint(ipAddress, port);
-            server = new TcpListener(_endpoint);
+            this._printTextDelegate = printTextDelegate;
+            var endpoint = new IPEndPoint(_ipAddress, port);
+            _server = new TcpListener(endpoint);
         }
 
+        /// <summary>
+        /// Starting up the server.
+        /// We will also create a new dataStream for the server so that the user that is hosting will be able to chat
+        /// </summary>
         public void Start()
         {
-            server.Start();
+            // Trying if the server can be started
+            try {
+                _server.Start();
+                _printTextDelegate("Listening for a client.");
+                var t = new Thread(delegate ()
+                {
+                    _client = _server.AcceptTcpClient();
+                    var dataStream = new DataStream(_client, delegate (string input)
+                    {
+                        _printTextDelegate(input);
+                    });
+                });
+                t.Start();
+            }
+            // Catching any SocketExceptions if there is already a server running on the port
+            catch(SocketException e)
+            {
+                _printTextDelegate("Cannot create a server, because there is already a server running." + "Error: " + e);
+                _server.Stop();
+            }
         }
 
-        public void ReceiveData(PrintTextDelegate PrintTextDelegate)
+        /// <summary>
+        /// Method to let the server (TCPListener) stop
+        /// </summary>
+        public void Stop()
         {
-            byte[] _byteArray = new byte[1024];
-            string _data;
-            Thread _t = new Thread(delegate ()
-            {
-                TcpClient client = server.AcceptTcpClient();
-                NetworkStream stream = client.GetStream();
-                PrintTextDelegate("Connected!");
+            _server.Stop();
+        }
 
-                bool listen = true;
-                while (listen)
-                {
-                    int i;
-                    i = stream.Read(_byteArray, 0, _byteArray.Length);
+        /// <summary>
+        /// Sending a message to the stream. This message will be send to other users and printed out to the current client
+        /// </summary>
+        /// <param name="message">The message that has to be transported</param>
+        public void SendMessage(string message)
+        {
+            var byteArray = new byte[1024];
 
-                    // Translate data bytes to a ASCII string.
-                    _data = Encoding.ASCII.GetString(_byteArray);
+            var stream = _client.GetStream();
 
-                    if(_data == "bye")
-                    {
-                        listen = false;
-                    }
-
-                    PrintTextDelegate(_data);
-
-                    // Clearing the variables
-                    _data = null;
-                    Array.Clear(_byteArray, 0, _byteArray.Length);
-                }
-
-                _byteArray = Encoding.ASCII.GetBytes("bye");
-                stream.Write(_byteArray, 0, _byteArray.Length);
-
-                stream.Close();
-                client.Close();
-                PrintTextDelegate("Connection closed.");
-            });
-            _t.Start();
+            // Encoding the message to bytes for transportation
+            byteArray = Encoding.ASCII.GetBytes(message);
+            // Writing the bytes to the stream
+            stream.Write(byteArray, 0, byteArray.Length);
+            // Printing out the message to the current user
+            _printTextDelegate(message);
         }
     }
 }

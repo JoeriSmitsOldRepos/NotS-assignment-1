@@ -53,6 +53,7 @@
       <DependentUpon>chatApp.cs</DependentUpon>
     </Compile>
     <Compile Include="Client.cs" />
+    <Compile Include="DataStream.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />

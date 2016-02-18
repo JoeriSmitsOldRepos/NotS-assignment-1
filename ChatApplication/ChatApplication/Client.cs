@@ -6,35 +6,57 @@ using System.Threading;
 
 namespace ChatApplication
 {
-    class Client
+    internal class Client
     {
-        private TcpClient client;
-        private NetworkStream stream;
-        public delegate void PrintTextDelegate(String input);
-        private PrintTextDelegate printTextDelegate;
+        private NetworkStream _stream;
+        public delegate void PrintTextDelegate(string input);
+        private readonly PrintTextDelegate _printTextDelegate;
 
+        /// <summary>
+        /// Constructor for Client
+        /// Everytime a client has been newed it will connect the client to user defined address
+        /// It will also start a DataStream for this user so he is able to see any chat messages
+        /// </summary>
+        /// <param name="ipAddress">ipAddress used to connect the client to the server</param>
+        /// <param name="port">port used to connect the client to the server</param>
+        /// <param name="printTextDelegate">The print delegate to print out any messages to the user</param>
         public Client(IPAddress ipAddress, int port, PrintTextDelegate printTextDelegate)
         {
-            this.printTextDelegate = printTextDelegate;
+            this._printTextDelegate = printTextDelegate;
 
-            IPEndPoint _endpoint = new IPEndPoint(ipAddress, port);
-            Thread _t = new Thread(delegate ()
+            // Combining the ipAddress and the port together in a endpoint
+            var endpoint = new IPEndPoint(ipAddress, port);
+
+            // Start a new Thread to make a connection with the server
+            var t = new Thread(delegate ()
             {
-                client = new TcpClient();
-                client.Connect(_endpoint);
-                stream = client.GetStream();
-                printTextDelegate("Connected!");
+                var client = new TcpClient();
+                client.Connect(endpoint);
+                _stream = client.GetStream();
+
+                // Create a dataStream when a connection have been made
+                var dataStream = new DataStream(client, delegate(string input)
+                {
+                    printTextDelegate(input);
+                });
             });
-            _t.Start();
+            t.Start();
         }
 
+        /// <summary>
+        /// Sending a message to the stream. This message will be send to other users and printed out to the current client
+        /// </summary>
+        /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            byte[] _byteArray = new byte[1024];
+            var byteArray = new byte[1024];
 
-            _byteArray = Encoding.ASCII.GetBytes(message);
-            stream.Write(_byteArray, 0, _byteArray.Length);
-            printTextDelegate(message);
+            // Encoding the message to bytes for transportation
+            byteArray = Encoding.ASCII.GetBytes(message);
+            // Writing the bytes to the stream
+            _stream.Write(byteArray, 0, byteArray.Length);
+            // Printing out the message to the current user
+            _printTextDelegate(message);
         }
     }
 }

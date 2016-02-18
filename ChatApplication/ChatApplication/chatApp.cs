@@ -4,39 +4,93 @@ using System.Windows.Forms;
 
 namespace ChatApplication
 {
-    public partial class chatApp : Form
+    public partial class ChatApp : Form
     {
-        private Client client;
-        private int port = 9000;
+        private Client _client;
+        private Server _server;
+        private const int Port = 9000;
 
-        public chatApp()
+        /// <summary>
+        /// Constructor ChatApp
+        /// Initializing all the Form elements
+        /// </summary>
+        public ChatApp()
         {
             InitializeComponent();
         }
 
-        private void _BtnListen_Click(Object sender, EventArgs e)
+        /// <summary>
+        /// Listener for when the button is clicked to start a new server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _BtnListen_Click(object sender, EventArgs e)
         {
-            Server server = new Server(port);
-            server.Start();
-            _addTextToLstChat("Listening for a client.");
-
-            server.ReceiveData(_addTextToLstChat);
+            _server = new Server(Port, _addTextToLstChat);
+            _server.Start();
         }
 
-        private void _BtnConnect_Click(Object sender, EventArgs e)
+        /// <summary>
+        /// Listener for when the button is clicked to connect to a server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _BtnConnect_Click(object sender, EventArgs e)
         {
+            // Print text to the user indicating that he is connecting to the server
             _addTextToLstChat("Connecting...");
-
-            client = new Client(IPAddress.Parse(txtServerIP.Text), port, _addTextToLstChat);
+            // Create a new client that will connect to the user defined server in txtServerIP
+            _client = new Client(IPAddress.Parse(txtServerIP.Text), Port, _addTextToLstChat);
         }
 
-        private void _BtnSend_Click(Object sender, EventArgs e)
+        /// <summary>
+        /// Listener for when the button is clicked to send a message
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _BtnSend_Click(object sender, EventArgs e)
         {
-            client.SendMessage(txtMessage.Text);
+            // If the server has hosted a server then we will send the message through the server's class
+            // Otherwise we will send the message through the client class
+            if(_server != null)
+            {
+                _server.SendMessage(txtMessage.Text);
+            }
+            else
+            {
+                _client.SendMessage(txtMessage.Text);
+            }
+            // Empty the textbox where the user can type the message after send
             txtMessage.Text = "";
+            // Set the focus back on the text element to get continous typing
             this.ActiveControl = txtMessage;
         }
 
+        /// <summary>
+        /// When the user closes the form this method will be called
+        /// It tries to stop the user (If there is one) and if this will not succeed due to a NullReferenceException error
+        /// it will log this to the Console
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        private void ChatApp_Closing(object sender, FormClosingEventArgs eventArgs)
+        {
+            // Try to stop the server (_server cannot always be initialized)
+            try
+            {
+                _server.Stop();
+            }
+            // If _server is not initialized it will log the error to the Console
+            catch (NullReferenceException e)
+            {
+                Console.Write(e);
+            }
+        }
+
+        /// <summary>
+        /// Adds any input string to the lstChat form element. It will put every message on a seperate new line
+        /// </summary>
+        /// <param name="input">The input that will be printed</param>
         private void _addTextToLstChat(string input)
         {
             Invoke(new Action(() =>

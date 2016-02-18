@@ -2,7 +2,7 @@
 
 namespace ChatApplication
 {
-    partial class chatApp
+    partial class ChatApp
     {
         /// <summary>
         /// Required designer variable.
@@ -171,7 +171,7 @@ namespace ChatApplication
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1105, 516);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "chatApp";
+            this.Name = "ChatApp";
             this.Text = "NotS WI - Chat Applicatie";
             this.serverDetails.ResumeLayout(false);
             this.serverDetails.PerformLayout();
@@ -181,6 +181,7 @@ namespace ChatApplication
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChatApp_Closing);
 
         }
 
