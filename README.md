@@ -9,7 +9,8 @@ Dit is een chat applicatie die is gebouwd op het client/server principe. Door mi
 
 Het programma bestaat uit vier gedefineerde classes. 
 * De classe "**Client**" is een client die kan verbinden met een server.
-* De classe "**Server**" is een server waar andere clients mee kunnen verbinden. De server kan worden gestart door middel van ```C#
+* De classe "**Server**" is een server waar andere clients mee kunnen verbinden. De server kan worden gestart door middel van
+```cs
 Server server = new Server(port);
 server.Start();
 ```
