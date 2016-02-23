@@ -26,6 +26,9 @@ Wanneer je _generics_ toepast dan zorg je ervoor dat de compiler checks kan doen
 Het toepassen van _generics_ is ook nog eens sneller, omdat je niet te maken hebt met boxing/unboxing.
 
 ###Code voorbeeld van je eigen code
+```cs
+public partial class ChatApp : Form {}
+```
 
 ###Alternatieven & adviezen
 
