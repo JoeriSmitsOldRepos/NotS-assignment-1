@@ -64,9 +64,34 @@ Hejlsberg, A. (2010, November 10). The C# Programming Language: Types. Retrieved
 ##Delegates & Invoke
 
 ###Beschrijving van concept in eigen woorden
+Een _delegate_ is een type wat een referentie van een methode onthoudt in een object. Het wordt ook wel benoemt als een "type safe function pointer".  
+Wat een delegate voor gebruikt kan worden is het doorgeven van een methode (De delegate) als argument van een andere methode. Zo kan je dus een "callback" maken zoals dit bijvoorbeeld ook in een taal als javascript makkelijk kan.
 
 ###Code voorbeeld van je eigen code
+```cs
+public delegate void PrintTextDelegate(string input);
+private readonly PrintTextDelegate _printTextDelegate;
+private readonly TcpClient _client;
 
+public DataStream(TcpClient client, PrintTextDelegate printTextDelegate)
+  {
+    this._client = client;
+    this._printTextDelegate = printTextDelegate;
+
+    ReceiveData();
+  }
+
+public void ReceiveData()
+  {
+    var byteArray = new byte[256];
+    string data;
+    var t = new Thread(delegate ()
+      {
+        var stream = _client.GetStream();
+        _printTextDelegate("Connected!");
+      }
+  }
+```
 ###Alternatieven & adviezen
 
 ###Authentieke en gezaghebbende bronnen
