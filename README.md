@@ -33,7 +33,8 @@ public partial class ChatApp : Form {}
 ###Alternatieven & adviezen
 
 ###Authentieke en gezaghebbende bronnen
-Vrat Agarwal, V. (2013, March 5). Using Generics With C#. Retrieved February 23, 2016, from http://www.c-sharpcorner.com/UploadFile/84c85b/using-generics-with-C-Sharp/
+Vrat Agarwal, V. (2013, March 5). Using Generics With C#. Retrieved February 23, 2016, from http://www.c-sharpcorner.com/UploadFile/84c85b/using-generics-with-C-Sharp/  
+Strahl, R. (2012, October 23). Dynamic Code for type casting Generic Types 'generically' in C#. Retrieved February 23, 2016, from http://weblog.west-wind.com/posts/2012/Oct/23/Dynamic-Code-for-type-casting-Generic-Types-generically-in-C
 
 ##Boxing & Unboxing
 
