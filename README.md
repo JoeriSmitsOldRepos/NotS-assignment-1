@@ -30,6 +30,7 @@ Het toepassen van _generics_ is ook nog eens sneller, omdat je niet te maken heb
 ###Alternatieven & adviezen
 
 ###Authentieke en gezaghebbende bronnen
+Vrat Agarwal, V. (2013, March 5). Using Generics With C#. Retrieved February 23, 2016, from http://www.c-sharpcorner.com/UploadFile/84c85b/using-generics-with-C-Sharp/
 
 ##Boxing & Unboxing
 
