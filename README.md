@@ -19,6 +19,13 @@ Server server = new Server(int port);
 server.Start();
 ```
 
+### Test cases
+#### Meerdere servers op dezelfde port
+De applicatie moet afvangen dat er meerdere servers worden gemaakt op hetzelfde IPAddress met dezelfde port. De applicatie moet een melding naar de gebruiker doen wanneer dit voordoet.
+
+#### Verbinden naar een server die niet bestaat
+De applicatie moet voorkomen dat een gebruiker naar een server verbind die niet bestaat. De applicatie moet een melding naar de gebruiker doen wanneer dit voordoet.
+
 ##Generics
 ###Beschrijving van concept in eigen woorden
 _Generics_ stellen je in staat om code te gebruiken of te schrijven die "type-safe" is. Bijvoorbeeld als je een List<string> gebruikt dat is dat altijd een lijst van strings.  
