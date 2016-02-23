@@ -65,8 +65,8 @@ Hejlsberg, A. (2010, November 10). The C# Programming Language: Types. Retrieved
 
 ###Beschrijving van concept in eigen woorden
 Een _delegate_ is een type wat een referentie van een methode onthoudt in een object. Het wordt ook wel benoemt als een "type safe function pointer".  
-Wat een delegate voor gebruikt kan worden is het doorgeven van een methode (De delegate) als argument van een andere methode. Zo kan je dus een "callback" maken zoals dit bijvoorbeeld ook in een taal als javascript makkelijk kan.  
-Invoke zorgt ervoor dat de code die wordt aangeroepen wordt uitgevoerd op de "thread" die momenteel actief is. Zo ontstaan er geen threaded exceptions.
+Wat een delegate voor gebruikt kan worden is het doorgeven van een methode (De _delegate_) als argument van een andere methode. Zo kan je dus een "callback" maken zoals dit bijvoorbeeld ook in een taal als javascript makkelijk kan.  
+_Invoke_ zorgt ervoor dat de code die wordt aangeroepen wordt uitgevoerd op de "thread" die momenteel actief is. Zo ontstaan er geen threaded exceptions.
 
 ###Code voorbeeld van je eigen code
 ```cs
@@ -93,10 +93,11 @@ public void ReceiveData()
       }
   }
 ```
+
 ###Alternatieven & adviezen
-Er is de mogelijkheid om een single-method interface te gebruiken inplaats van een delegate. Veel komt overeen met beide aanpakken.  
-Er wordt toch aangeraden om een delegate te gebruiken, omdat delegates hiervoor bedoelt zijn. Je hoeft in ieder geval geen aparte interface te declareren.  
-De volgende punten kunnen ook worden gebruikt bij een delegate en niet bij een interface:
+Er is de mogelijkheid om een single-method interface te gebruiken inplaats van een _delegate_. Veel komt overeen met beide aanpakken.  
+Er wordt toch aangeraden om een _delegate_ te gebruiken, omdat delegates hiervoor bedoelt zijn. Je hoeft in ieder geval geen aparte interface te declareren.  
+De volgende punten kunnen ook worden gebruikt bij een _delegate_ en niet bij een interface:
 >* There is support built into the CLR for them
 * There's support in the framework for them, including multi-cast abilities and asynchronous invocation
 * There's additional C#/VB language support in the form of method group conversions, lambda expressions, anonymous methods
@@ -109,9 +110,13 @@ Nayagam, A. (2015, September 16). Understanding Delegates in C#. Retrieved Febru
 ##Threading & Async
 
 ###Beschrijving van concept in eigen woorden
+Zowel _async_ als _threading_ zijn beide belangrijke functionaliteiten in C#. Wat er wordt bedoelt met een "_async_ operation" is dat de opdracht buiten de main thread wordt uitgevoerd. _Async_ hoeft geen gebruik te maken van _threading_.
+Het aanmaken van een nieuwe thread doe je vooral als er een kans ontstaat dat het proces de main UI thread kan blokken. Neem bijvoorbeeld het wachten op een bericht van een TCPClient. Als de UI thread dit continue moet doen dan is er geen tijd meer om te reageren op user input. Hiervoor maken we dus een aparte _thread_ aan die dit kan afhandelen.
 
 ###Code voorbeeld van je eigen code
 
 ###Alternatieven & adviezen
+>Creating a new tread is costly, it takes time. Unless we need to control a thread, then “Task-based Asynchronous Pattern (TAP)” and “Task Parallel Library (TPL)” is good enough for asynchronous and parallel programming. TAP and TPL uses Task (we will discuss what is Task latter). In general Task uses the thread from ThreadPool(A thread pool is a collection of threads already created and maintained by .NET framework. If we use Task, most of the cases we need not to use thread pool directly. Still if you want to know more about thread pool visit the link: https://msdn.microsoft.com/en-us/library/h4732ks0.aspx) (Bulbul, 2015)
 
 ###Authentieke en gezaghebbende bronnen
+Bulbul, A. (2015, June 1). Asynchronous programming and Threading in C# (.NET 4.5). Retrieved February 23, 2016, from http://www.codeproject.com/Articles/996857/Asynchronous-programming-and-Threading-in-Csharp-N
