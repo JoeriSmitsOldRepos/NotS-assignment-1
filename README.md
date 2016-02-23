@@ -114,6 +114,19 @@ Zowel _async_ als _threading_ zijn beide belangrijke functionaliteiten in C#. Wa
 Het aanmaken van een nieuwe thread doe je vooral als er een kans ontstaat dat het proces de main UI thread kan blokken. Neem bijvoorbeeld het wachten op een bericht van een TCPClient. Als de UI thread dit continue moet doen dan is er geen tijd meer om te reageren op user input. Hiervoor maken we dus een aparte _thread_ aan die dit kan afhandelen.
 
 ###Code voorbeeld van je eigen code
+```cs
+_server.Start();
+_printTextDelegate("Listening for a client.");
+var t = new Thread(delegate ()
+  {
+    _client = _server.AcceptTcpClient();
+    var dataStream = new DataStream(_client, delegate (string input)
+      {
+        _printTextDelegate(input);
+      });
+  });
+t.Start();
+```
 
 ###Alternatieven & adviezen
 >Creating a new tread is costly, it takes time. Unless we need to control a thread, then “Task-based Asynchronous Pattern (TAP)” and “Task Parallel Library (TPL)” is good enough for asynchronous and parallel programming. TAP and TPL uses Task (we will discuss what is Task latter). In general Task uses the thread from ThreadPool(A thread pool is a collection of threads already created and maintained by .NET framework. If we use Task, most of the cases we need not to use thread pool directly. Still if you want to know more about thread pool visit the link: https://msdn.microsoft.com/en-us/library/h4732ks0.aspx) (Bulbul, 2015)
