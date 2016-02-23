@@ -48,10 +48,11 @@ Door middel van gebruik te maken van _boxing_ kan iedere "value-type" worden ver
 data = Encoding.ASCII.GetString(byteArray);
 ```
 ###Alternatieven & adviezen
->Since the introduction of C# 2.0, generics have provided an alternative solution in these cases, which leads to better static type safety and performance. Boxing/unboxing necessarily demands a small performance overhead, because it means copying values, dealing with indirection, and allocating memory on the heap.
+>Since the introduction of C# 2.0, generics have provided an alternative solution in these cases, which leads to better static type safety and performance. Boxing/unboxing necessarily demands a small performance overhead, because it means copying values, dealing with indirection, and allocating memory on the heap. (Joseph Albahari, 2010)
 
 ###Authentieke en gezaghebbende bronnen
-Ganesh, A. (2002, May 1). Boxing and unboxing in C#. Retrieved February 23, 2016, from http://www.codeproject.com/Articles/2225/Boxing-and-unboxing-in-C
+Ganesh, A. (2002, May 1). Boxing and unboxing in C#. Retrieved February 23, 2016, from http://www.codeproject.com/Articles/2225/Boxing-and-unboxing-in-C  
+Hejlsberg, A. (2010, November 10). The C# Programming Language: Types. Retrieved February 23, 2016, from http://www.informit.com/articles/article.aspx?p=1648574
 
 ##Delegates & Invoke
 
