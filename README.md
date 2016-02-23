@@ -11,6 +11,7 @@ Het programma bestaat uit vier gedefineerde classes.
 * De classe "**Client**" is een client die kan verbinden met een server.
 * De classe "**Server**" is een server waar andere clients mee kunnen verbinden.
 * De classe "**DataStream**" is de classe die tussen de client en de server ligt. De classe zorgt ervoor dat elke client een bericht krijgt als een andere client een bericht stuurt.
+* In de classe "**ChatApp**" staan alle event listeners van het window form. In deze classe worden dan ook de bovenstaande classe geinitialiseerd om het programma te laten werken.
 
 De server kan met de volgende code worden gestart:
 ```cs
@@ -19,8 +20,10 @@ server.Start();
 ```
 
 ##Generics
-
 ###Beschrijving van concept in eigen woorden
+_Generics_ stellen je in staat om code te gebruiken of te schrijven die "type-safe" is. Bijvoorbeeld als je een List<string> gebruikt dat is dat altijd een lijst van strings.  
+Wanneer je _generics_ toepast dan zorg je ervoor dat de compiler checks kan doen tijdens "compile-time". Bijvoorbeeld wanneer je een int in een List<string> probeert te stoppen. Als je geen _generics_ toepast en bijvoorbeeld een ArrayList gebruikt dan kan het vorige voorbeeld een run-time error opleveren de minder duidelijk kan zijn als de compile fout.  
+Het toepassen van _generics_ is ook nog eens sneller, omdat je niet te maken hebt met boxing/unboxing.
 
 ###Code voorbeeld van je eigen code
 
