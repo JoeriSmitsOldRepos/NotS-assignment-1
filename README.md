@@ -21,10 +21,13 @@ server.Start();
 
 ### Test cases
 #### Meerdere servers op dezelfde port
-De applicatie moet afvangen dat er meerdere servers worden gemaakt op hetzelfde IPAddress met dezelfde port. De applicatie moet een melding naar de gebruiker doen wanneer dit voordoet.
+De applicatie moet afvangen dat er meerdere servers worden gemaakt op hetzelfde IPAddress met dezelfde port. De applicatie moet een melding naar de gebruiker sturen wanneer dit voordoet.
 
 #### Verbinden naar een server die niet bestaat
-De applicatie moet voorkomen dat een gebruiker naar een server verbind die niet bestaat. De applicatie moet een melding naar de gebruiker doen wanneer dit voordoet.
+De applicatie moet voorkomen dat een gebruiker naar een server verbind die niet bestaat. De applicatie moet een melding naar de gebruiker sturen wanneer dit voordoet.
+
+#### Bericht versturen, maar niet verbonden aan een server
+De applicatie moet voorkomen dat een gebruiker een bericht kan versturen zonder dat de gebruiker verbonden is aan een server. De applicatie moet een melding naar de gebruiker sturen wanneer dit voordoet.
 
 ##Generics
 ###Beschrijving van concept in eigen woorden
