@@ -93,8 +93,17 @@ public void ReceiveData()
   }
 ```
 ###Alternatieven & adviezen
+Er is de mogelijkheid om een single-method interface te gebruiken inplaats van een delegate. Veel komt overeen met beide aanpakken.  
+Er wordt toch aangeraden om een delegate te gebruiken, omdat delegates hiervoor bedoelt zijn. Je hoeft in ieder geval geen aparte interface te declareren.  
+De volgende punten kunnen ook worden gebruikt bij een delegate en niet bij een interface:
+>* There is support built into the CLR for them
+* There's support in the framework for them, including multi-cast abilities and asynchronous invocation
+* There's additional C#/VB language support in the form of method group conversions, lambda expressions, anonymous methods
+* They're mandated for events (i.e. events and delegates are a sort of matching pair)
+* They mean you don't need to implement an interface in a separate class for each delegate instance you want to create.
 
 ###Authentieke en gezaghebbende bronnen
+Nayagam, A. (2015, September 16). Understanding Delegates in C#. Retrieved February 23, 2016, from http://www.codeproject.com/Articles/11657/Understanding-Delegates-in-C
 
 ##Threading & Async
 
