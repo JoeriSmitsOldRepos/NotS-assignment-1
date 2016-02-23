@@ -31,6 +31,7 @@ public partial class ChatApp : Form {}
 ```
 
 ###Alternatieven & adviezen
+Als alternatief kan je boxing/unboxing gebruiken in c#. Dit is alleen duurder in de performance van je applicatie, omdat de variabele moet worden "geboxed" en dan worden "ge-unboxed". Daarom is het ook te adviseren om _generics_ te gebruiken daar waar het kan.
 
 ###Authentieke en gezaghebbende bronnen
 Vrat Agarwal, V. (2013, March 5). Using Generics With C#. Retrieved February 23, 2016, from http://www.c-sharpcorner.com/UploadFile/84c85b/using-generics-with-C-Sharp/  
