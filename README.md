@@ -40,12 +40,18 @@ Strahl, R. (2012, October 23). Dynamic Code for type casting Generic Types 'gene
 ##Boxing & Unboxing
 
 ###Beschrijving van concept in eigen woorden
+Door middel van gebruik te maken van _boxing_ kan iedere "value-type" worden veranderd naar een "value-type" object. _Unboxing_ is het tegenovergestelde van _boxing_. Hier wordt de "object box" terug veranderd is zijn originele "value-type".
 
 ###Code voorbeeld van je eigen code
-
+```cs
+// Translate data bytes to a ASCII string.
+data = Encoding.ASCII.GetString(byteArray);
+```
 ###Alternatieven & adviezen
+>Since the introduction of C# 2.0, generics have provided an alternative solution in these cases, which leads to better static type safety and performance. Boxing/unboxing necessarily demands a small performance overhead, because it means copying values, dealing with indirection, and allocating memory on the heap.
 
 ###Authentieke en gezaghebbende bronnen
+Ganesh, A. (2002, May 1). Boxing and unboxing in C#. Retrieved February 23, 2016, from http://www.codeproject.com/Articles/2225/Boxing-and-unboxing-in-C
 
 ##Delegates & Invoke
 
