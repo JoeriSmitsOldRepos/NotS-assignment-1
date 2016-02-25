@@ -43,20 +43,29 @@ namespace ChatApplication
                 _printTextDelegate("Listening for a client.");
                 var t = new Thread(delegate ()
                 {
-                    while(true)
+                    var looping = true;
+                    while(looping)
                     {
-                        if (_server.Pending())
+                        try
                         {
-                            _client = _server.AcceptTcpClient();
-                            Clients.Add(_client);
-
-                            foreach (var client in Clients)
+                            if (_server.Pending())
                             {
-                                _dataStream = new DataStream(client, delegate (string input)
+                                _client = _server.AcceptTcpClient();
+                                Clients.Add(_client);
+
+                                foreach (var client in Clients)
                                 {
-                                    _printTextDelegate(input);
-                                });
+                                    _dataStream = new DataStream(client, delegate(string input)
+                                    {
+                                        _printTextDelegate(input);
+                                    });
+                                }
                             }
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            looping = false;
+                            _printTextDelegate("You have lost connection with the server.");
                         }
                     }
                 });
@@ -85,8 +94,12 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            var stream = _client.GetStream();
-            _dataStream.sendMessage(stream, message);
+            foreach (var client in Clients)
+            {
+                var stream = client.GetStream();
+                _dataStream.sendMessage(stream, message, true);
+            }
+            _printTextDelegate("<< " + message);
         }
     }
 }

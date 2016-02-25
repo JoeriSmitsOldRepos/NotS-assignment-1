@@ -60,7 +60,7 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            dataStream.sendMessage(_stream, message);
+            dataStream.sendMessage(_stream, message, false);
         }
     }
 }

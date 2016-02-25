@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -42,37 +43,47 @@ namespace ChatApplication
 
                 var listen = true;
                 // Listening for any data from the stream.
-                while (true)
+                var looping = true;
+                while (looping)
                 {
                     if (listen)
                     {
-                        var i = stream.Read(byteArray, 0, byteArray.Length);
-
-                        // Translate data bytes to a ASCII string.
-                        data = Encoding.ASCII.GetString(byteArray);
-
-                        // Send the data to every client that is connected except the client where the data came from
-                        foreach (var clientItem in Server.Clients)
+                        try
                         {
-                            if (client != clientItem)
-                            {
-                                var streamItem = clientItem.GetStream();
-                                streamItem.Write(byteArray, 0, byteArray.Length);
-                            }
-                        }
+                            var i = stream.Read(byteArray, 0, byteArray.Length);
 
-                        // When the data (What the user types) is "bye" it will stop listening
-                        var cleaned = data.Replace("\0", string.Empty);
-                        if (cleaned == "bye")
+                            // Translate data bytes to a ASCII string.
+                            data = Encoding.ASCII.GetString(byteArray);
+
+                            // Send the data to every client that is connected except the client where the data came from
+                            foreach (var clientItem in Server.Clients)
+                            {
+                                if (client != clientItem)
+                                {
+                                    var streamItem = clientItem.GetStream();
+                                    streamItem.Write(byteArray, 0, byteArray.Length);
+                                }
+                            }
+
+                            // When the data (What the user types) is "bye" it will stop listening
+                            var cleaned = data.Replace("\0", string.Empty);
+                            if (cleaned == "bye")
+                            {
+                                listen = false;
+                            }
+
+                            // Printing the message to the user that has been received
+                            _printTextDelegate(">> " + cleaned);
+
+                            // Clearing the variable for the next data
+                            Array.Clear(byteArray, 0, byteArray.Length);
+                        }
+                        catch (IOException)
                         {
                             listen = false;
+                            looping = false;
+                            _printTextDelegate("You have lost connection with the server.");
                         }
-
-                        // Printing the message to the user that has been received
-                        _printTextDelegate(">> " + cleaned);
-
-                        // Clearing the variable for the next data
-                        Array.Clear(byteArray, 0, byteArray.Length);
                     }
                     else
                     {
@@ -91,24 +102,36 @@ namespace ChatApplication
         /// </summary>
         /// <param name="stream">The network stream the message should be send to.</param>
         /// <param name="message">The actual message that has to be send.</param>
-        public void sendMessage(NetworkStream stream, string message)
+        /// <param name="isServer">Checks if the caller is a server</param>
+        public void sendMessage(NetworkStream stream, string message, bool isServer)
         {
             // Check if the client has not a closed connection
             if (!_clientKilled)
             {
-                var byteArray = new byte[message.Length];
+                try
+                {
+                    var byteArray = new byte[message.Length];
 
-                // Encoding the message to bytes for transportation
-                byteArray = Encoding.ASCII.GetBytes(message);
-                // Writing the bytes to the 
-                stream.Write(byteArray, 0, byteArray.Length);
-                // Printing out the message to the current user
-                _printTextDelegate("<< " + message);
-            }
-            // If message is "bye" we will close the connection and prevent the user from sending data
-            if (message == "bye")
-            {
-                _clientKilled = true;
+                    // Encoding the message to bytes for transportation
+                    byteArray = Encoding.ASCII.GetBytes(message);
+                    // Writing the bytes to the 
+                    stream.Write(byteArray, 0, byteArray.Length);
+                    // Printing out the message to the current user
+                    if (!isServer)
+                    {
+                        _printTextDelegate("<< " + message);
+                    }
+
+                    // If message is "bye" we will close the connection and prevent the user from sending data
+                    if (message == "bye")
+                    {
+                        _clientKilled = true;
+                    }
+                }
+                catch (IOException)
+                {
+                    _printTextDelegate("Could not send the message. No server connection");
+                }
             }
         }
     }
