@@ -133,6 +133,7 @@ namespace ChatApplication
         /// <param name="input">The input that will be printed</param>
         private void _addTextToLstChat(string input)
         {
+            // suspress error to enable message when server closes unexpectedly
             Invoke(new Action(() =>
             {
                 lstChat.AppendText(input);
