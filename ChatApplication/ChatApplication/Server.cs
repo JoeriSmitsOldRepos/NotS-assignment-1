@@ -12,7 +12,7 @@ namespace ChatApplication
         private readonly IPAddress _ipAddress = IPAddress.Any;
         private readonly TcpListener _server;
         private TcpClient _client;
-        private DataStream dataStream;
+        private DataStream _dataStream;
         public static List<TcpClient> Clients = new List<TcpClient>();
         public delegate void PrintTextDelegate(string input);
         private readonly PrintTextDelegate _printTextDelegate;
@@ -52,7 +52,7 @@ namespace ChatApplication
 
                             foreach (var client in Clients)
                             {
-                                dataStream = new DataStream(_client, delegate (string input)
+                                _dataStream = new DataStream(client, delegate (string input)
                                 {
                                     _printTextDelegate(input);
                                 });
@@ -86,7 +86,7 @@ namespace ChatApplication
         public void SendMessage(string message)
         {
             var stream = _client.GetStream();
-            dataStream.sendMessage(stream, message);
+            _dataStream.sendMessage(stream, message);
         }
     }
 }
