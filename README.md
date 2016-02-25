@@ -13,12 +13,6 @@ Het programma bestaat uit vier gedefineerde classes.
 * De classe "**DataStream**" is de classe die tussen de client en de server ligt. De classe zorgt ervoor dat elke client een bericht krijgt als een andere client een bericht stuurt.
 * In de classe "**ChatApp**" staan alle event listeners van het window form. In deze classe worden dan ook de bovenstaande classe geinitialiseerd om het programma te laten werken.
 
-De server kan met de volgende code worden gestart:
-```cs
-Server server = new Server(int port);
-server.Start();
-```
-
 ### Test cases
 #### Meerdere servers op dezelfde port
 De applicatie moet afvangen dat er meerdere servers worden gemaakt op hetzelfde IPAddress met dezelfde port. De applicatie moet een melding naar de gebruiker sturen wanneer dit voordoet.
