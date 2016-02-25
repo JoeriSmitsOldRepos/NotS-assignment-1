@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ChatApplication
 {
@@ -103,7 +99,7 @@ namespace ChatApplication
         /// <param name="stream">The network stream the message should be send to.</param>
         /// <param name="message">The actual message that has to be send.</param>
         /// <param name="isServer">Checks if the caller is a server</param>
-        public void sendMessage(NetworkStream stream, string message, bool isServer)
+        public void SendMessage(NetworkStream stream, string message, bool isServer)
         {
             // Check if the client has not a closed connection
             if (!_clientKilled)
@@ -130,7 +126,7 @@ namespace ChatApplication
                 }
                 catch (IOException)
                 {
-                    _printTextDelegate("Could not send the message. No server connection");
+                    _printTextDelegate("Could not send the message. No server connection.");
                 }
             }
         }

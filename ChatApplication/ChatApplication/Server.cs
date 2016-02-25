@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChatApplication
 {
@@ -46,22 +46,24 @@ namespace ChatApplication
                     var looping = true;
                     while(looping)
                     {
+                        // Try if the server is accessible
                         try
                         {
-                            if (_server.Pending())
-                            {
-                                _client = _server.AcceptTcpClient();
-                                Clients.Add(_client);
+                            // Determines if there are pending connection requests.
+                            if (!_server.Pending()) continue;
+                            _client = _server.AcceptTcpClient();
+                            Clients.Add(_client);
 
-                                foreach (var client in Clients)
+                            // Set-up a dataStream for every client connected to the server
+                            foreach (var client in Clients)
+                            {
+                                _dataStream = new DataStream(client, delegate(string input)
                                 {
-                                    _dataStream = new DataStream(client, delegate(string input)
-                                    {
-                                        _printTextDelegate(input);
-                                    });
-                                }
+                                    _printTextDelegate(input);
+                                });
                             }
                         }
+                        // If not then we will let the user know
                         catch (ObjectDisposedException)
                         {
                             looping = false;
@@ -94,10 +96,10 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            foreach (var client in Clients)
+            // Send the message for each client connected to the server.
+            foreach (var stream in Clients.Select(client => client.GetStream()))
             {
-                var stream = client.GetStream();
-                _dataStream.sendMessage(stream, message, true);
+                _dataStream.SendMessage(stream, message, true);
             }
             _printTextDelegate("<< " + message);
         }

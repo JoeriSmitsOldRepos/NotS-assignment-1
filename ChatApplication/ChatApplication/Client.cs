@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
@@ -9,7 +8,7 @@ namespace ChatApplication
     internal class Client
     {
         private NetworkStream _stream;
-        private DataStream dataStream;
+        private DataStream _dataStream;
         public delegate void PrintTextDelegate(string input);
         private readonly PrintTextDelegate _printTextDelegate;
 
@@ -39,7 +38,7 @@ namespace ChatApplication
                     _stream = client.GetStream();
 
                     // Create a dataStream when a connection have been made
-                    dataStream = new DataStream(client, delegate(string input)
+                    _dataStream = new DataStream(client, delegate(string input)
                     {
                         printTextDelegate(input);
                     });
@@ -60,7 +59,7 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            dataStream.sendMessage(_stream, message, false);
+            _dataStream.SendMessage(_stream, message, false);
         }
     }
 }
