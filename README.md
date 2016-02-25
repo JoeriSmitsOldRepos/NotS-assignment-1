@@ -29,6 +29,9 @@ De applicatie moet voorkomen dat een gebruiker naar een server verbind die niet 
 #### Bericht versturen, maar niet verbonden aan een server
 De applicatie moet voorkomen dat een gebruiker een bericht kan versturen zonder dat de gebruiker verbonden is aan een server. De applicatie moet een melding naar de gebruiker sturen wanneer dit voordoet.
 
+#### De server stopt omdat de gebruiker het programma afsluit
+Wanneer een gebruiker (Die de server is) zijn applicatie sluit moeten alle andere verbonden client een melding hiervan krijgen.
+
 ##Generics
 ###Beschrijving van concept in eigen woorden
 _Generics_ stellen je in staat om code te gebruiken of te schrijven die "type-safe" is. Bijvoorbeeld als je een List<string> gebruikt dat is dat altijd een lijst van strings.  
