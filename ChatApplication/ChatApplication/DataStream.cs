@@ -13,8 +13,6 @@ namespace ChatApplication
     {
         public delegate void PrintTextDelegate(string input);
         private readonly PrintTextDelegate _printTextDelegate;
-        private readonly TcpClient _client;
-
         /// <summary>
         /// DataStream constructor set's the readOnly fields and calls ReceiveData()
         /// </summary>
@@ -22,23 +20,22 @@ namespace ChatApplication
         /// <param name="printTextDelegate">The print delegate to print out any messages to the user</param>
         public DataStream(TcpClient client, PrintTextDelegate printTextDelegate)
         {
-            this._client = client;
             this._printTextDelegate = printTextDelegate;
 
-            ReceiveData();
+            ReceiveData(client);
         }
 
         /// <summary>
         /// Listens for data in a seperate Thread. When data is received it will print out the data to the user
         /// When the user types "bye" it should stop listening and close the stream.
         /// </summary>
-        public void ReceiveData()
+        public void ReceiveData(TcpClient client)
         {
             var byteArray = new byte[256];
             string data;
             var t = new Thread(delegate ()
             {
-                var stream = _client.GetStream();
+                var stream = client.GetStream();
                 _printTextDelegate("Connected!");
 
                 var listen = true;
@@ -51,28 +48,49 @@ namespace ChatApplication
                     data = Encoding.ASCII.GetString(byteArray);
 
                     // When the data (What the user types) is "bye" it will stop listening
-                    if (data == "bye")
+                    var cleaned = data.Replace("\0", string.Empty);
+                    if (cleaned == "bye")
                     {
                         listen = false;
+                        Server.Clients.Remove(client);
+                    }
+
+                    // Send the data to every client that is connected except the client where the data came from
+                    foreach(var clientItem in Server.Clients)
+                    {
+                        if (client != clientItem)
+                        {
+                            var streamItem = clientItem.GetStream();
+                            streamItem.Write(byteArray, 0, byteArray.Length);
+                        }
                     }
 
                     // Printing the message to the user that has been received
-                    _printTextDelegate(">> " + data);
+                    _printTextDelegate(">> " + cleaned);
 
                     // Clearing the variables for the next data
                     data = null;
+                    cleaned = null;
                     Array.Clear(byteArray, 0, byteArray.Length);
                 }
-                
-                // Closing process (Send "bye" to the user)
-                byteArray = Encoding.ASCII.GetBytes("bye");
-                stream.Write(byteArray, 0, byteArray.Length);
-
+               
                 stream.Close();
-                _client.Close();
+                client.Close();
                 _printTextDelegate("Connection closed.");
             });
             t.Start();
+        }
+
+        public void sendMessage(NetworkStream stream, string message)
+        {
+            var byteArray = new byte[message.Length];
+
+            // Encoding the message to bytes for transportation
+            byteArray = Encoding.ASCII.GetBytes(message);
+            // Writing the bytes to the 
+            stream.Write(byteArray, 0, byteArray.Length);
+            // Printing out the message to the current user
+            _printTextDelegate("<< " + message);
         }
     }
 }

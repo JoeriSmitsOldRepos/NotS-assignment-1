@@ -9,6 +9,7 @@ namespace ChatApplication
     internal class Client
     {
         private NetworkStream _stream;
+        private DataStream dataStream;
         public delegate void PrintTextDelegate(string input);
         private readonly PrintTextDelegate _printTextDelegate;
 
@@ -38,7 +39,7 @@ namespace ChatApplication
                     _stream = client.GetStream();
 
                     // Create a dataStream when a connection have been made
-                    var dataStream = new DataStream(client, delegate(string input)
+                    dataStream = new DataStream(client, delegate(string input)
                     {
                         printTextDelegate(input);
                     });
@@ -59,14 +60,7 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            var byteArray = new byte[message.Length];
-
-            // Encoding the message to bytes for transportation
-            byteArray = Encoding.ASCII.GetBytes(message);
-            // Writing the bytes to the stream
-            _stream.Write(byteArray, 0, byteArray.Length);
-            // Printing out the message to the current user
-            _printTextDelegate("<< " + message);
+            dataStream.sendMessage(_stream, message);
         }
     }
 }

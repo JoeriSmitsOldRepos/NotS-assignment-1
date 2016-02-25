@@ -3,6 +3,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace ChatApplication
 {
@@ -11,6 +12,8 @@ namespace ChatApplication
         private readonly IPAddress _ipAddress = IPAddress.Any;
         private readonly TcpListener _server;
         private TcpClient _client;
+        private DataStream dataStream;
+        public static List<TcpClient> Clients = new List<TcpClient>();
         public delegate void PrintTextDelegate(string input);
         private readonly PrintTextDelegate _printTextDelegate;
 
@@ -40,11 +43,22 @@ namespace ChatApplication
                 _printTextDelegate("Listening for a client.");
                 var t = new Thread(delegate ()
                 {
-                    _client = _server.AcceptTcpClient();
-                    var dataStream = new DataStream(_client, delegate (string input)
+                    while(true)
                     {
-                        _printTextDelegate(input);
-                    });
+                        if (_server.Pending())
+                        {
+                            _client = _server.AcceptTcpClient();
+                            Clients.Add(_client);
+
+                            foreach (var client in Clients)
+                            {
+                                dataStream = new DataStream(_client, delegate (string input)
+                                {
+                                    _printTextDelegate(input);
+                                });
+                            }
+                        }
+                    }
                 });
                 t.Start();
             }
@@ -71,23 +85,8 @@ namespace ChatApplication
         /// <param name="message">The message that has to be transported</param>
         public void SendMessage(string message)
         {
-            try
-            {
-                var byteArray = new byte[message.Length];
-
-                var stream = _client.GetStream();
-
-                // Encoding the message to bytes for transportation
-                byteArray = Encoding.ASCII.GetBytes(message);
-                // Writing the bytes to the stream
-                stream.Write(byteArray, 0, byteArray.Length);
-                // Printing out the message to the current user
-                _printTextDelegate("<< " + message);
-            }
-            catch (NullReferenceException)
-            {
-                _printTextDelegate("Cannot connect to the server");
-            }
+            var stream = _client.GetStream();
+            dataStream.sendMessage(stream, message);
         }
     }
 }
