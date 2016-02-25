@@ -11,7 +11,6 @@ namespace ChatApplication
     {
         private readonly IPAddress _ipAddress = IPAddress.Any;
         private readonly TcpListener _server;
-        private TcpClient _client;
         private DataStream _dataStream;
         public static List<TcpClient> Clients = new List<TcpClient>();
         public delegate void PrintTextDelegate(string input);
@@ -51,13 +50,13 @@ namespace ChatApplication
                         {
                             // Determines if there are pending connection requests.
                             if (!_server.Pending()) continue;
-                            _client = _server.AcceptTcpClient();
-                            Clients.Add(_client);
+                            var client = _server.AcceptTcpClient();
+                            Clients.Add(client);
 
                             // Set-up a dataStream for every client connected to the server
-                            foreach (var client in Clients)
+                            foreach (var clientItem in Clients)
                             {
-                                _dataStream = new DataStream(client, delegate(string input)
+                                _dataStream = new DataStream(clientItem, delegate(string input)
                                 {
                                     _printTextDelegate(input);
                                 });

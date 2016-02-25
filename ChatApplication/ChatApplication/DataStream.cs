@@ -28,6 +28,7 @@ namespace ChatApplication
         /// Listens for data in a seperate Thread. When data is received it will print out the data to the user
         /// When the user types "bye" it should stop listening and close the stream.
         /// </summary>
+        /// <param name="client">The client where the while loop will run on</param>
         public void ReceiveData(TcpClient client)
         {
             var byteArray = new byte[256];
@@ -104,6 +105,7 @@ namespace ChatApplication
             // Check if the client has not a closed connection
             if (!_clientKilled)
             {
+                // Check if there is a server to send the message to.
                 try
                 {
                     var byteArray = new byte[message.Length];
@@ -124,6 +126,7 @@ namespace ChatApplication
                         _clientKilled = true;
                     }
                 }
+                // There is no server
                 catch (IOException)
                 {
                     _printTextDelegate("Could not send the message. No server connection.");
